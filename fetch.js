@@ -85,12 +85,26 @@ const consolePosts = () => {
 const displayPost = () => {
   const allPosts = document.getElementById('all-posts')
   userData.results.map((post) => {
-    const pic = document.createElement('img').src = `${post.picture.thumbnail}`
+    const pic = document.createElement('img')
+    pic.src = src = `${post.picture.thumbnail}`
     const li = document.createElement('li')
+    const btn = document.createElement("button");
+    btn.innerHTML = "See more info"
+    const spaceHolder = document.createElement('div')
     const text = document.createTextNode(`${post.name.title} ${post.name.first} ${post.name.last}`)
+    // li.appendChild(pic)
     li.appendChild(pic)
     li.appendChild(text)
+    li.appendChild(btn)
+    li.appendChild(spaceHolder)
     allPosts.append(li)
+    btn.onclick = function() {
+      const newLi = document.createElement('li');
+      const newText =document.createTextNode(`${post.email} ${post.location.city}`);
+      spaceHolder.appendChild(newText);
+      allPosts.append(li)
+      console.log(newText, "hello")
+    }
   })
 }
 
