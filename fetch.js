@@ -45,9 +45,16 @@ window.onload = function() {
 //   .then(json => console.log(json))
 // }
 
+const checkFetch = (response) => {
+  if (!response.ok) {
+    throw Error(`${response.statusText} - ${response.url}`);
+  }
+  return response;
+}
 // this function is going to make a fetch request to the url inside it's parameter brackets (). Then it will turn the response (data it's getting back), saved here as res. The res.json will not be saved as posts and saved into the variable, arrayOfPosts
 const getPosts = () => {
   fetch('https://randomuser.me/api/?results=100')
+    .then(checkFetch)
     .then(res => res.json())
     // .then(posts => console.log(posts))
     .then(posts => userData = posts)
