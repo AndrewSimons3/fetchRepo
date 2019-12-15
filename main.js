@@ -1,4 +1,6 @@
 let userData;
+const btnText = "See more info"
+const btnAlternateText = "See less info"
 // let first5Posts;
 // let arrayOfComments;
 // let arrayOfUsers;
@@ -6,11 +8,6 @@ let userData;
 // this function waits for the web page to be loaded, when it does it will run the code inside of it which happen to be getPosts()
 window.onload = function() {
   getPosts()
-  // get5Posts()
-  // getComments()
-  // getUsers()
-  // createPost()
-  // editPost()
 }
 // const createPost = () => {
 // fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -55,9 +52,14 @@ const checkFetch = (response) => {
 const getPosts = () => {
   fetch('https://randomuser.me/api/?results=100')
     .then(checkFetch)
-    .then(res => res.json())
+    .then(res => {
+      return res.json()
+    })
+
     // .then(posts => console.log(posts))
-    .then(posts => userData = posts)
+    .then(posts => {
+      userData = posts
+    })
     .catch(error => console.log(error))
 }
 const consolePosts = () => {
@@ -86,32 +88,50 @@ const consolePosts = () => {
 // data = data.filter(entry => entry.created > someValue) // Created after X
 //                    .slice(0, 1000);                            // Limit to 1000
 
-// this function logs the results in your browsers console
+const createUserLiElement = (post, allPosts) => {
+  
+  const li = document.createElement('li')
+    
+  // creates the image element
+  const pic = document.createElement('img')
+  pic.src = src = `${post.picture.thumbnail}`
+  li.appendChild(pic)
 
-// this function creates elements inside the all-posts ul, then appends text inside it with the posts that were returned in the request.
+  //creates the text node
+  const text = document.createTextNode(`${post.name.title} ${post.name.first} ${post.name.last}`)
+  li.appendChild(text)
+
+  //creates see more info button
+  const btn = document.createElement("button");
+  btn.innerHTML = btnText
+  li.appendChild(btn)
+  btn.onclick = function() {
+    
+    if (btn.innerHTML === btnText) {
+      const newText = document.createTextNode(`${post.email} ${post.location.city}`);
+      spaceHolder.appendChild(newText);
+      btn.innerHTML = btnAlternateText
+    } else {
+      spaceHolder.innerHTML = ''
+      btn.innerHTML = btnText
+    }
+  }
+
+  //creates the space holder div
+  const spaceHolder = document.createElement('div')
+  li.appendChild(spaceHolder)
+
+  allPosts.append(li)
+}
+
+
+
+// this function creates elements inside the all-posts ul, then appends text inside it with the posts that were returned in the request
 const displayPost = () => {
   const allPosts = document.getElementById('all-posts')
-  userData.results.map((post) => {
-    const pic = document.createElement('img')
-    pic.src = src = `${post.picture.thumbnail}`
-    const li = document.createElement('li')
-    const btn = document.createElement("button");
-    btn.innerHTML = "See more info"
-    const spaceHolder = document.createElement('div')
-    const text = document.createTextNode(`${post.name.title} ${post.name.first} ${post.name.last}`)
-    // li.appendChild(pic)
-    li.appendChild(pic)
-    li.appendChild(text)
-    li.appendChild(btn)
-    li.appendChild(spaceHolder)
-    allPosts.append(li)
-    btn.onclick = function() {
-      const newLi = document.createElement('li');
-      const newText =document.createTextNode(`${post.email} ${post.location.city}`);
-      spaceHolder.appendChild(newText);
-      allPosts.append(li)
-      console.log(newText, "hello")
-    }
+  const allUsers = userData.results
+  allUsers.forEach((post) => {
+    createUserLiElement(post, allPosts)
   })
 }
 
