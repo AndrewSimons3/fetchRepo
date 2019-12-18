@@ -42,44 +42,128 @@ let userData;
 //   .then(json => console.log(json))
 // }
 
-// const checkFetch = (response) => {
-//   if (!response.ok) {
-//     throw Error(`${response.statusText} - ${response.url}`);
-//   }
-//   return response;
-// }
+const checkFetch = (response) => {
+  if (!response.ok) {
+    throw Error(`${response.statusText} - ${response.url}`);
+  }
+  return response;
+}
 // this function is going to make a fetch request to the url inside it's parameter brackets (). Then it will turn the response (data it's getting back), saved here as res. The res.json will not be saved as posts and saved into the variable, arrayOfPosts
 
-const asset = require('assert')
-const getPosts = () => {
-  fetch('https://randomuser.me/api/?results=100')
-    .then(checkFetch)
+const assert = require('assert')
+
+const getPosts = (fetch, id) => {
+  return fetch('https://randomuser.me/api/')
+    // .then(checkFetch)
     .then(res => {
       return res.json()
     })
 
     // .then(posts => console.log(posts))
     .then(posts => {
-      userData = posts
-    })
-    .catch(error => console.log(error))
+      return posts
+    }) 
+    
+    // .catch(error => console.log(error))
 }
 console.log(getPosts);
 
+const getPostsAPI = (fetch, api) => {
+  return fetch('https://randomuser.me/api/' + api)
+    // .then(checkFetch)
+    .then(res => {
+      return res.json()
+    })
+
+    // .then(posts => console.log(posts))
+    .then(posts => {
+      return posts
+    }) 
+    
+    // .catch(error => console.log(error))
+}
+
+const getPostsFemale = (fetch) => {
+  return fetch('https://randomuser.me/api/?gender=female')
+    // .then(checkFetch)
+    .then(res => {
+      return res.json()
+    })
+
+    // .then(posts => console.log(posts))
+    .then(posts => {
+      return posts
+    }) 
+    
+    // .catch(error => console.log(error))
+}
+const getUsers = (fetch, id) => {
+  return fetch('https://randomuser.me/api/?results=' + id)
+    // .then(checkFetch)
+    .then(res => {
+      return res.json()
+    })
+
+    // .then(posts => console.log(posts))
+    .then(posts => {
+      return posts
+    }) 
+    
+    // .catch(error => console.log(error))
+}
 
 
-describe('getAnimals', () => {
+
+
+describe('getPosts', () => {
   it('calls fetch with the correct url', () => {
     const fakeFetch = url => {
       assert(
         url ===
-        'http://api.animalfarmgame.com/animals/123'
+        'https://randomuser.me/api/'
       )
       return new Promise(function(resolve) {
 
       })
     }
-    getAnimals(fakeFetch, 123)
+    getPosts(fakeFetch)
+  })
+
+  it('uses the correct API Key', () => {
+    const fakeFetch = url => {
+      assert(
+        url ===
+        'https://randomuser.me/api/12345'
+      )
+      return new Promise(function(resolve) {
+
+      })
+    }
+    getPostsAPI(fakeFetch, 12345)
+  })
+  it('verifies you have requested a number of users', () => {
+    const fakeFetch = url => {
+      assert(
+        url ===
+        'https://randomuser.me/api/?results=100'
+      )
+      return new Promise(function(resolve) {
+
+      })
+    }
+    getUsers(fakeFetch, 100)
+  })
+  it('Confirms you are requesting female users', () => {
+    const fakeFetch = url => {
+      assert(
+        url ===
+        'https://randomuser.me/api/?gender=female'
+      )
+      return new Promise(function(resolve) {
+
+      })
+    }
+    getPostsFemale(fakeFetch)
   })
 
   it('parses the response of fetch correctly', (done) => {
@@ -87,17 +171,17 @@ describe('getAnimals', () => {
       return Promise.resolve({
         json: () => Promise.resolve({
           results: [
-            { name: 'fluffykins' }
+            { name: 'Mary' }
           ]
         })
       })
     }
-    getAnimals(fakeFetch, 12345)
-      .then(result => {
-        assert(result.name === 'fluffykins')
+    getPosts(fakeFetch, 12345)
+      .then(data=> {
+        assert(data.results[0].name == 'Mary')
         done()
-      })
-  })
+  }) .catch(done)
+})
 })
 
 // describe('getPosts', () => {
