@@ -1,3 +1,5 @@
+const assert = require('assert')
+
 let userData;
 const btnText = "See more info"
 const btnAlternateText = "See less info"
@@ -50,7 +52,7 @@ const checkFetch = (response) => {
 }
 // this function is going to make a fetch request to the url inside it's parameter brackets (). Then it will turn the response (data it's getting back), saved here as res. The res.json will not be saved as posts and saved into the variable, arrayOfPosts
 const getPosts = () => {
-  fetch('https://randomuser.me/api/?results=100')
+  fetch('https://randomuser.me/api)
     .then(checkFetch)
     .then(res => {
       return res.json()
@@ -192,3 +194,189 @@ const displayPost = () => {
 //     }
 // }
 // return pairs
+
+let userData;
+// const btnText = "See more info"
+// const btnAlternateText = "See less info"
+// // let first5Posts;
+// // let arrayOfComments;
+// // let arrayOfUsers;
+
+// // this function waits for the web page to be loaded, when it does it will run the code inside of it which happen to be getPosts()
+// window.onload = function() {
+// getPosts()
+// }
+// // const createPost = () => {
+// fetch('https://jsonplaceholder.typicode.com/posts', {
+// method: 'POST',
+// body: JSON.stringify({
+// title: 'foo',
+// body: 'bar',
+// userId: 1
+// }),
+// headers: {
+// "Content-type": "application/json; charset=UTF-8"
+// }
+// })
+// .then(response => response.json())
+// .then(json => console.log(json))
+// }
+
+// const editPost = () => {
+// fetch('https://jsonplaceholder.typicode.com/posts/1', {
+// method: 'PUT',
+// body: JSON.stringify({
+// id: 1,
+// title: 'foo',
+// body: 'bar',
+// userId: 1
+// }),
+// headers: {
+// "Content-type": "application/json; charset=UTF-8"
+// }
+// })
+// .then(response => response.json())
+// .then(json => console.log(json))
+// }
+
+const checkFetch = (response) => {
+if (!response.ok) {
+throw Error(${response.statusText} - ${response.url});
+}
+return response;
+}
+// this function is going to make a fetch request to the url inside it's parameter brackets (). Then it will turn the response (data it's getting back), saved here as res. The res.json will not be saved as posts and saved into the variable, arrayOfPosts
+
+const assert = require('assert')
+
+const getPosts = (fetch, id) => {
+return fetch('https://randomuser.me/api/')
+// .then(checkFetch)
+.then(res => {
+return res.json()
+})
+
+// .then(posts => console.log(posts))
+.then(posts => {
+return posts
+})
+
+// .catch(error => console.log(error))
+}
+console.log(getPosts);
+
+const getPostsAPI = (fetch, api) => {
+return fetch('https://randomuser.me/api/' + api)
+// .then(checkFetch)
+.then(res => {
+return res.json()
+})
+
+// .then(posts => console.log(posts))
+.then(posts => {
+return posts
+})
+
+// .catch(error => console.log(error))
+}
+
+const getPostsFemale = (fetch) => {
+return fetch('https://randomuser.me/api/?gender=female')
+// .then(checkFetch)
+.then(res => {
+return res.json()
+})
+
+// .then(posts => console.log(posts))
+.then(posts => {
+return posts
+})
+
+// .catch(error => console.log(error))
+}
+const getUsers = (fetch, id) => {
+return fetch('https://randomuser.me/api/?results=' + id)
+// .then(checkFetch)
+.then(res => {
+return res.json()
+})
+
+// .then(posts => console.log(posts))
+.then(posts => {
+return posts
+})
+
+// .catch(error => console.log(error))
+}
+
+
+
+
+describe('getPosts', () => {
+it('calls fetch with the correct url', () => {
+const fakeFetch = url => {
+assert(
+url ===
+'https://randomuser.me/api/'
+)
+return new Promise(function(resolve) {
+
+})
+}
+getPosts(fakeFetch)
+})
+
+it('uses the correct API Key', () => {
+const fakeFetch = url => {
+assert(
+url ===
+'https://randomuser.me/api/12345'
+)
+return new Promise(function(resolve) {
+
+})
+}
+getPostsAPI(fakeFetch, 12345)
+})
+it('verifies you have requested a number of users', () => {
+const fakeFetch = url => {
+assert(
+url ===
+'https://randomuser.me/api/?results=100'
+)
+return new Promise(function(resolve) {
+
+})
+}
+getUsers(fakeFetch, 100)
+})
+it('Confirms you are requesting female users', () => {
+const fakeFetch = url => {
+assert(
+url ===
+'https://randomuser.me/api/?gender=female'
+)
+return new Promise(function(resolve) {
+
+})
+}
+getPostsFemale(fakeFetch)
+})
+
+it('parses the response of fetch correctly', (done) => {
+const fakeFetch = () => {
+return Promise.resolve({
+json: () => Promise.resolve({
+results: [
+{ name: 'Mary' }
+]
+})
+})
+}
+getPosts(fakeFetch, 12345)
+.then(data=> {
+assert(data.results[0].name == 'Mary')
+done()
+}) .catch(done)
+})
+})
